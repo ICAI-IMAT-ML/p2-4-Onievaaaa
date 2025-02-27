@@ -97,7 +97,7 @@ class LinearRegressor:
         for epoch in range(iterations):
             predictions = self.intercept + np.dot(X[:,1:], self.coefficients)
             error = predictions - y
-
+    
             # TODO: Write the gradient values and the updates for the paramenters
 
             gradient = (1 / len(X)) * X.T @ error
@@ -125,11 +125,13 @@ class LinearRegressor:
         """
 
         # Paste your code from last week
-
         if self.coefficients is None or self.intercept is None:
             raise ValueError("Model is not yet fitted")
-        if np.ndim():
-            return None
+        if np.ndim(X) == 1:
+            predictions = self.intercept + self.coefficients * X
+        else:
+            predictions = self.intercept + np.dot(X, self.coefficients)
+        return predictions
 
 
 def evaluate_regression(y_true, y_pred):
