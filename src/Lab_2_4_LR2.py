@@ -46,7 +46,7 @@ class LinearRegressor:
         )  # Adding a column of ones for intercept
 
         if method == "least_squares":
-            self.fit_multiple(X, y)
+            self.fit_multiple(X_with_bias, y)
         elif method == "gradient_descent":
             self.fit_gradient_descent(X_with_bias, y, learning_rate, iterations)
 
@@ -67,8 +67,9 @@ class LinearRegressor:
         # Replace this code with the code you did in the previous laboratory session
 
         # Store the intercept and the coefficients of the modelx
-        x_nueva = np.c_[np.ones(X.shape[0]),X]
-        matriz = np.linalg.inv(x_nueva.T @ x_nueva) @ x_nueva.T @ y
+        Xt = X.T
+        mult_trans = np.linalg.inv(Xt @ X)
+        matriz = mult_trans @ Xt @ y
         self.intercept = matriz[0]
         self.coefficients = matriz[1:]
 
@@ -87,7 +88,6 @@ class LinearRegressor:
         """
 
         # Initialize the parameters to very small values (close to 0)
-        m = len(y)
         self.coefficients = (
             np.random.rand(X.shape[1] - 1) * 0.01
         )  # Small random numbers
@@ -130,7 +130,7 @@ class LinearRegressor:
         if np.ndim(X) == 1:
             predictions = self.intercept + self.coefficients * X
         else:
-            predictions = self.intercept + np.dot(X, self.coefficients)
+            predictions = self.intercept + X @ self.coefficients
         return predictions
 
 
